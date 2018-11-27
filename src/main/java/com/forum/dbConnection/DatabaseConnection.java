@@ -1,10 +1,13 @@
-package dbConnection;
+package com.forum.dbConnection;
+
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 
 /**
  * Created by Hristiyan on 14.5.2018 ã..
  */
+@Component
 public class DatabaseConnection {
 
     private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/car_repair_db";

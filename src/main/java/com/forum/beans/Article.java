@@ -1,4 +1,4 @@
-package beans;
+package com.forum.beans;
 
 import java.util.Date;
 import java.util.List;

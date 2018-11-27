@@ -1,10 +1,12 @@
-package services;
+package com.forum.services;
 
-import beans.Article;
-import beans.Brand;
-import beans.Category;
-import beans.Model;
-import carRepairDAOImpl.CarRepairOperationsDAO;
+import com.forum.beans.Article;
+import com.forum.beans.Brand;
+import com.forum.beans.Category;
+import com.forum.beans.Model;
+import com.forum.carRepairDAOImpl.CarRepairOperationsDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,11 +16,13 @@ import java.util.List;
 /**
  * Created by Hristiyan on 18.5.2018 �..
  */
-
+@Service
 public class DataOperations {
 
 //    @EJB
-    CarRepairOperationsDAO carRepairOperationsDAO = new CarRepairOperationsDAO();
+//    CarRepairOperationsDAO carRepairOperationsDAO = new CarRepairOperationsDAO();
+    @Autowired
+    CarRepairOperationsDAO carRepairOperationsDAO;
 
     public List<Brand> getBrands() {
         carRepairOperationsDAO.init();
@@ -99,21 +103,22 @@ public class DataOperations {
         return result;
     }
 
-    public String saveImage(String json, String fileName) {
+    public String saveImage(byte[] imageBytes, String fileName) {
 
         String savedImagePath = null;
 
-        StringBuilder filePath = new StringBuilder("D:\\DiplomnaRabota\\uploadedImages\\");
+        StringBuilder filePath = new StringBuilder("D:\\DiplomnaRabota\\uploadedImages\\" + fileName);
         FileOutputStream fileOutputStream = null;
-        json = json.replaceAll(" ", "+");
         String path = null;
         try {
-            filePath.append(fileName).append(".png");
             File file = new File(filePath.toString());
 
             if (file.exists()) {
                 int fileExistsCounter = 1;
-                int index = filePath.indexOf(".png");
+                int index = filePath.lastIndexOf(".");
+                if (index < 0) {
+                    filePath.append(".png");
+                }
                 filePath.insert(index, "(" + fileExistsCounter + ")");
                 file = new File(filePath.toString());
 //                path = filePath.toString();
@@ -125,9 +130,8 @@ public class DataOperations {
 
 //            file = new File(filePath.toString());
             if (file.createNewFile()) {
-                byte[] imageDecoded = Base64.getDecoder().decode(json);
                 fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(imageDecoded);
+                fileOutputStream.write(imageBytes);
                 savedImagePath = filePath.toString();
             }
         } catch (IOException e) {
@@ -155,10 +159,10 @@ public class DataOperations {
         return id;
     }
 
-    public int uploadImage(String encodedImage, String fileName) {
+    public int uploadImage(byte[] imageBytes, String fileName) {
         int id = -1;
 
-        String savedImagePath = saveImage(encodedImage, fileName);
+        String savedImagePath = saveImage(imageBytes, fileName);
         if (savedImagePath != null) {
             id = storeImageUrlInDB(savedImagePath);
         }

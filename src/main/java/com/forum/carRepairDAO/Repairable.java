@@ -1,12 +1,10 @@
-package carRepairDAO;
+package com.forum.carRepairDAO;
 
-import beans.Article;
-import beans.Brand;
-import beans.Category;
-import beans.Model;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import com.forum.beans.Article;
+import com.forum.beans.Brand;
+import com.forum.beans.Category;
+import com.forum.beans.Model;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**

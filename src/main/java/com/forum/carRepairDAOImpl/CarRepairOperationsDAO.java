@@ -1,12 +1,14 @@
-package carRepairDAOImpl;
+package com.forum.carRepairDAOImpl;
 
-import beans.Article;
-import beans.Brand;
-import beans.Category;
-import beans.Model;
-import carRepairDAO.Repairable;
-import dbConnection.DatabaseConnection;
-import services.DataOperations;
+import com.forum.beans.Article;
+import com.forum.beans.Brand;
+import com.forum.beans.Category;
+import com.forum.beans.Model;
+import com.forum.carRepairDAO.Repairable;
+import com.forum.dbConnection.DatabaseConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import com.forum.services.DataOperations;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Date;
  * Created by Hristiyan on 14.5.2018 �..
  */
 
-//@Stateless
+@Component
 public class CarRepairOperationsDAO implements Repairable{
 
     private static final String BRANDS_TABLE = "brands";
@@ -25,6 +27,7 @@ public class CarRepairOperationsDAO implements Repairable{
     private static final String ARTICLES_TABLE = "articles";
     private static final String IMAGES_TABLE = "uploaded_images";
 
+    @Autowired
     private DatabaseConnection databaseConnection;
     Connection connection;
 
@@ -33,7 +36,7 @@ public class CarRepairOperationsDAO implements Repairable{
     }
 
     public void init() {
-        databaseConnection = new DatabaseConnection();
+//        databaseConnection = new DatabaseConnection();
         databaseConnection.init();
         connection = databaseConnection.getConnection();
     }

@@ -1,12 +1,16 @@
-package beans;
+package com.forum.beans;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Hristiyan on 26.5.2018 ã..
  */
 public class Image {
 
-    private String name;
+    @JsonProperty
     private String encodedData;
+    @JsonProperty
+    private String name;
 
     public Image() {
 
