@@ -1,0 +1,22 @@
+.loginButton{
+    position: absolute;
+    top: 40%;
+    left: 45%;
+}
+
+.backgroundImage{
+    margin: 0;
+    max-width:100%;
+    background-size:cover;
+    /*height:inherit;*/
+}
+
+.container {
+    width: 100%;
+    height: auto;
+}
+.bodyClass{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}

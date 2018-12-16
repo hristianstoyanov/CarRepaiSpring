@@ -3,9 +3,7 @@ package com.forum.beans;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Hristiyan on 14.5.2018 ã..
- */
+
 public class Article {
 
     private int id;

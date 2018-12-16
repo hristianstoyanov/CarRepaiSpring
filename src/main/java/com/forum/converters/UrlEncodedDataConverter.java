@@ -12,9 +12,6 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * Created by Hrisi on 24.11.2018 ã..
- */
 public class UrlEncodedDataConverter extends AbstractHttpMessageConverter<Image>{
 
     private static final FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();

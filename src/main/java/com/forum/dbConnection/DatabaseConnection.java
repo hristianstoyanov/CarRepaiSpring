@@ -4,9 +4,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 
-/**
- * Created by Hristiyan on 14.5.2018 ã..
- */
 @Component
 public class DatabaseConnection {
 

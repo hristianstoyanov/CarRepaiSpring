@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Hristiyan on 19.5.2018 �..
- */
 
 @RequestMapping("/")
 @RestController

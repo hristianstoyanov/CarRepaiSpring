@@ -4,16 +4,13 @@ import com.forum.beans.Article;
 import com.forum.services.DataOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Created by Hrisi on 25.11.2018 ã..
- */
+
 @RequestMapping("/articles")
+@RestController
 public class ArticlesEndpoint {
 
     @Autowired
@@ -24,20 +21,25 @@ public class ArticlesEndpoint {
         return operations.getArticle(id);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ResponseEntity addArticle(Article article) {
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addArticle(@RequestBody Article article) {
         boolean response = false;
         response = operations.addArticle(article);
         if (response) {
-            return ResponseEntity.ok("Upload success!");
+            return "Upload success!";
         } else {
-            return ResponseEntity.ok("Internal server error!");
+            return"Internal server error!";
         }
     }
 
     @RequestMapping("/all")
     public List<Article> getAllArticles(@RequestParam("brandId")int brandId, @RequestParam("modelId")int modelId, @RequestParam("categoryId")int categoryId) {
         return operations.getArticlesTitle(brandId, modelId, categoryId);
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public boolean delete(@RequestParam("articleId") int articleId) {
+        return operations.deleteArticle(articleId);
     }
 
 }

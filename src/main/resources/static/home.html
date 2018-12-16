@@ -1,0 +1,156 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/home_page.css">
+    <script src="./js/jquery-3.3.1.js"></script>
+</head>
+<body>
+
+<script>
+    function openBrandsDropdown() {
+        document.getElementById("brandsDropdown").classList.toggle("show");
+    }
+
+    function openModelsDropdown() {
+        if (sessionStorage.getItem("selectedBrandId") != undefined) {
+            document.getElementById("modelsDropdown").classList.toggle("show");
+        }
+    }
+
+    function getSelectedMenuOption(menuOption, menuId, isBrand) {
+        document.getElementById(menuId).innerHTML = menuOption.innerHTML;
+        if (isBrand) {
+            let selectedBrandId = sessionStorage.getItem(menuOption.innerHTML);
+            sessionStorage.setItem("selectedBrand", menuOption.innerHTML);
+            sessionStorage.setItem("selectedBrandId", selectedBrandId);
+            getAllModelsByBrandId(selectedBrandId);
+        } else {
+            let selectedModelId = sessionStorage.getItem(menuOption.innerHTML);
+            sessionStorage.setItem("selectedModel", menuOption.innerHTML);
+            sessionStorage.setItem("selectedModelId", selectedModelId);
+            $(".categories").css("visibility", "visible");
+        }
+    }
+
+    function getAllModelsByBrandId(brandId) {
+        $.ajax({
+            url: "/models?brandId=" + brandId,
+            success: function (result) {
+                $("#modelsDropdown").empty();
+                for (var i = 0; i < result.length; i++) {
+                    var item = result[i];
+                    console.log(result[i]);
+                    sessionStorage.setItem(item.modelName, item.id);
+
+                    $("#modelsDropdown").append("<a onclick=\"getSelectedMenuOption(this, 'modelsId', false)\">" + item.modelName + "</a>");
+                }
+            }
+        });
+    }
+
+    function getCategoryId(category) {
+        $.ajax({
+            url: "/categories/all",
+            success: function(result) {
+                for (var i = 0; i < result.length; i++) {
+                    var item = result[i];
+                    console.log(result[i]);
+                    if (item.categoryName.toUpperCase() === category.toUpperCase()) {
+                        let selectedCategoryId = item.id;
+                        sessionStorage.setItem("selectedCategoryId", selectedCategoryId);
+                        window.location="http://localhost:8080/articles_page?email=" + sessionStorage.getItem("email");
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        if (sessionStorage.getItem("loggedUser") == undefined) {
+            window.location="http://localhost:8080/login";
+        }
+        $.ajax({
+            url: "/brands",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    var item = result[i];
+                    sessionStorage.setItem(item.brandName, item.id);
+
+                    $("#brandsDropdown").append("<a onclick=\"getSelectedMenuOption(this, 'brandsId', true)\">" + item.brandName + "</a>");
+                }
+            }
+        });
+    });
+
+</script>
+
+<div class="container">
+    <img class="images" src="images/carforrepair.png"><br>
+
+    <div class="dropdown">
+        <button id="brandsId" onclick="openBrandsDropdown()" class="dropbtn">Марки:</button>
+        <div id="brandsDropdown" class="dropdown-content">
+        </div>
+    </div>
+    <div class="dropdown">
+        <button id="modelsId" onclick="openModelsDropdown()" class="dropbtn">Модели:</button>
+        <div id="modelsDropdown" class="dropdown-content">
+        </div>
+    </div>
+
+    <div class="categories">
+        <br><br>
+
+        <div class="imageContainer">
+            <img id="engine" class="categoriesImages" onclick="getCategoryId('engine')" src="images/categories/engine.png"/>
+
+            <p>Двигател</p>
+        </div>
+        <div  class="imageContainer">
+            <img id="suspension" class="categoriesImages" onclick="getCategoryId('suspension')" src="images/categories/suspension.png"/>
+
+            <p>Окачване</p>
+        </div>
+
+
+        <div class="imageContainer">
+            <img id="brakes" class="categoriesImages" onclick="getCategoryId('brakes')" src="images/categories/brakes.png"/>
+
+            <p>Спирачки</p>
+        </div>
+        <div class="imageContainer">
+            <img id="electicity" class="categoriesImages" onclick="getCategoryId('electricity')" src="images/categories/battery.png"/>
+
+            <p>Ел.система</p>
+        </div>
+        <div class="imageContainer">
+            <img id="interior" class="categoriesImages" onclick="getCategoryId('interior')" src="images/categories/carinterior.jpg"/>
+
+            <p>Интериор</p>
+        </div>
+        <div class="imageContainer">
+            <img id="exterior" class="categoriesImages" onclick="getCategoryId('exterior')" src="images/categories/carexterior.jpg"/>
+
+            <p>Купе</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/create_article_page.css">
+    <script src="./js/jquery-3.3.1.js"></script>
+</head>
+<body>
+
+<script>
+    var uploadedImages = new Array();
+    var currentContentBox = "";
+    $(document).ready(function() {
+        if (sessionStorage.getItem("loggedUser") == undefined) {
+            window.location="http://localhost:8080/login";
+        }
+        var imagesCounter = 0;
+        $('#filechooser').change(function() {
+//            $('#target').submit();
+           var file =  $('#filechooser')[0].files[0];
+            var fd = new FormData();
+            fd.append('file',file);
+            console.log(file);
+
+            $.ajax({
+                type: "POST",
+                url: "/images/upload",
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    console.log(result);
+                    if (result > 0) {
+//                        let imageId = "&lt;img&gt;" + result.toString() + "&lt;/img&gt;";
+                        let imageId = "<img>" + result.toString() + "</img>";
+                        uploadedImages.push(imageId);
+                        var txt = $.trim($(this).text());
+                        var box = $("#contentBox");
+                        box.val(box.val() + txt + imageId);
+//                        $("#contentBox").append(imageId);
+//
+//                        console.log(imageId);
+//                        console.log($("#contentBox").val());
+                        imagesCounter++;
+                    } else {
+                        alert("Не успешно качване на снимка!");
+                    }
+                }
+            });
+        });
+    });
+    function sendArticle() {
+        if(isImgElementsCorrect()) {
+            let article = new Object();
+            article.brandId = sessionStorage.getItem("selectedBrandId");
+            article.modelId = sessionStorage.getItem("selectedModelId");
+            article.categoryId = sessionStorage.getItem("selectedCategoryId");
+            article.title = $("#titleBox").val();
+            article.author = sessionStorage.getItem("loggedUser");
+            var contentList = new Array();
+            let content = $("#contentBox").val();
+            console.log("--->" + content);
+            contentList.push(content);
+            article.content = contentList;
+            article.date = null;
+            console.log(article.content);
+            if (article.title != "" && article.content[0] != "") {
+                $.ajax({
+                    url: "/articles/add",
+                    type: "POST",
+                    data: JSON.stringify(article),
+                    dataType: "text",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data) {
+                        if (data === "Upload success!") {
+                            window.location="http://localhost:8080/articles_page?email=" + sessionStorage.getItem("email");
+                        } else {
+                            console.log("Грешка при качване на статията. Вероятно съществува статия със същото заглавие.");
+                        }
+                    },
+                    error: function() {
+                        alert('Error occured');
+                    }
+                });
+            } else {
+                alert("Попълненте заглавие и текст на статията.");
+            }
+
+        } else {
+            alert("Не променяйте таговете с изображенията.");
+        }
+
+    }
+
+    function isImgElementsCorrect() {
+        let articleWholeContent =  $("#contentBox").val();
+        console.log(articleWholeContent);
+        for (var i =0; i < uploadedImages.length; i++) {
+            if (!articleWholeContent.includes(uploadedImages[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+</script>
+
+<div class="container">
+
+    <div class="textTitle">
+        Заглавие: <input id="titleBox" type="text"/>
+        <hr>
+    </div>
+    <div class="textContent">
+        Съдържание: <br>
+        <textarea id="contentBox" name="Text1" cols="70" rows="30"></textarea>
+    </div>
+    <button class="submitButton" onclick="sendArticle()">Изпрати</button>
+    <form id="target" method="post" enctype="multipart/form-data">
+        <label for="filechooser" class="uploadImage">Качи снимка</label>
+        <input  type="file" id="filechooser" style="visibility: hidden" name="file" />
+    </form>
+</div>
+</body>
+</html>

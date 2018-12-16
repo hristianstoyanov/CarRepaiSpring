@@ -1,0 +1,57 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/loaded_article.css">
+    <script src="./js/jquery-3.3.1.js"></script>
+</head>
+<body>
+
+<script>
+    $(document).ready(function() {
+        if (sessionStorage.getItem("loggedUser") == undefined) {
+            window.location="http://localhost:8080/login";
+        }
+        $.ajax({
+            url: "/articles/articleById?id=" + sessionStorage.getItem("selectedArticleId"),
+            success: function (result) {
+                console.log(result);
+                for (let i=0; i < result.content.length; i++) {
+                    console.log("here");
+                    if (!result.content[i].includes("img")) {
+                        console.log("here1");
+                        $(".textContent").append(result.content[i] + "<hr>");
+                    } else {
+                        $(".textContent").append("<img class=\"image\" id=\"" + i + "\">" + "<hr>");
+                        let endOfImageId = result.content[i].indexOf("</");
+                        let imgId = result.content[i].substring(5, endOfImageId);
+                        loadImage(imgId, i);
+                    }
+                }
+                $(".textContent").append("<p>" + result.author + "</p>");
+            }
+        });
+
+        $(".textContainer").append("Всички статии за " + sessionStorage.getItem("selectedBrand") + " " + sessionStorage.getItem("selectedModel") + "<hr><br><br>");
+    });
+
+    function loadImage(imageId, i) {
+        $.ajax({
+            url : "/images/download?id=" + imageId,
+            processData : false,
+        }).always(function(base64Image){
+            $("#" + i).attr("src", "data:image/png;base64,"+ base64Image);
+        });
+    }
+
+
+</script>
+
+<div class="container">
+    <div class="textContainer">
+
+    </div>
+    <div class="textContent">
+
+    </div>
+</div>
+</body>
+</html>

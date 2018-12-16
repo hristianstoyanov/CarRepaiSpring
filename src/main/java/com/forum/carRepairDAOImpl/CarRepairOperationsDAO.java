@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-/**
- * Created by Hristiyan on 14.5.2018 �..
- */
 
 @Component
 public class CarRepairOperationsDAO implements Repairable{
@@ -25,6 +22,7 @@ public class CarRepairOperationsDAO implements Repairable{
     private static final String MODELS_TABLE = "models";
     private static final String CATEGORIES_TABLE = "categories";
     private static final String ARTICLES_TABLE = "articles";
+    private static final String ADMINS_TABLE = "admins";
     private static final String IMAGES_TABLE = "uploaded_images";
 
     @Autowired
@@ -324,6 +322,54 @@ public class CarRepairOperationsDAO implements Repairable{
         }
 
         return id;
+    }
+
+    public boolean deleteArticle(int articleId) {
+
+        int result = 0;
+        String query = "DELETE FROM " + ARTICLES_TABLE + " WHERE id = ?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, articleId);
+            result = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseConnection.close(preparedStatement);
+        }
+        if (result > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAdmin(String email) {
+        String query = "SELECT * FROM " + ADMINS_TABLE;
+        boolean isAdmin = false;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String resultMail = resultSet.getString("email");
+                if (resultMail.equals(email)) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseConnection.close(resultSet);
+            DatabaseConnection.close(preparedStatement);
+        }
+
+        return isAdmin;
     }
 
 }

@@ -5,22 +5,18 @@ import com.forum.beans.Brand;
 import com.forum.beans.Category;
 import com.forum.beans.Model;
 import com.forum.carRepairDAOImpl.CarRepairOperationsDAO;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
-/**
- * Created by Hristiyan on 18.5.2018 �..
- */
+
 @Service
 public class DataOperations {
 
-//    @EJB
-//    CarRepairOperationsDAO carRepairOperationsDAO = new CarRepairOperationsDAO();
     @Autowired
     CarRepairOperationsDAO carRepairOperationsDAO;
 
@@ -203,9 +199,9 @@ public class DataOperations {
         return list;
     }
 
-    public ByteArrayInputStream downloadImage(int id) {
-
-        ByteArrayInputStream byteArrayInputStream = null;
+    public String downloadImage(int id) {
+        byte[] imageBytes = null;
+//        ByteArrayInputStream byteArrayInputStream = null;
         carRepairOperationsDAO.init();
         String savedImageUrl = carRepairOperationsDAO.getImageById(id);
 
@@ -215,10 +211,12 @@ public class DataOperations {
                 File file = new File(savedImageUrl);
                 fileReader = new FileInputStream(file);
 
-                byte[] imageBytes = new byte[(int) file.length()];
-                if (fileReader.read(imageBytes) > 0) {
-                    byteArrayInputStream = new ByteArrayInputStream(imageBytes);
-                }
+                 imageBytes = new byte[(int) file.length()];
+                fileReader.read(imageBytes);
+//                if (fileReader.read(imageBytes) > 0) {
+//                    byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+//                }
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch(IOException e) {
@@ -235,11 +233,28 @@ public class DataOperations {
         }
         carRepairOperationsDAO.close();
 
-        return byteArrayInputStream;
+        return new String(Base64.encodeBase64(imageBytes));
     }
 
     public static java.sql.Date convertDateToSqlDate(java.util.Date date) {
         return new java.sql.Date(date.getTime());
     }
 
+    public boolean deleteArticle(int articleId) {
+        carRepairOperationsDAO.init();
+
+        boolean isDeletedSuccessfully = carRepairOperationsDAO.deleteArticle(articleId);
+        carRepairOperationsDAO.close();
+
+        return isDeletedSuccessfully;
+    }
+
+    public boolean isAdmin(String email) {
+        carRepairOperationsDAO.init();
+
+        boolean isAdmin = carRepairOperationsDAO.isAdmin(email);
+        carRepairOperationsDAO.close();
+
+        return isAdmin;
+    }
 }

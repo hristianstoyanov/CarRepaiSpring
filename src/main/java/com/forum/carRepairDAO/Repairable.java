@@ -22,4 +22,8 @@ public interface Repairable {
     boolean uploadArticle(Article article);
     boolean uploadImage(String filePath);
     int getImageId(String filePath);
+
+    boolean deleteArticle(int articleId);
+
+    boolean isAdmin(String email);
 }

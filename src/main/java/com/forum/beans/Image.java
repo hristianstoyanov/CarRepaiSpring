@@ -2,9 +2,6 @@ package com.forum.beans;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Created by Hristiyan on 26.5.2018 ã..
- */
 public class Image {
 
     @JsonProperty

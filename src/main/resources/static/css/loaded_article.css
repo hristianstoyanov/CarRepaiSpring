@@ -1,0 +1,26 @@
+.container {
+    margin-left:15em;
+    margin-right:15em;
+    background-color: #F6F6F6;
+}
+
+.textContainer {
+    margin:0 auto;
+    width:50%;
+    text-align:center;
+}
+
+.textContent {
+    margin:0 auto;
+    width:75%;
+    text-align:left;
+}
+
+.image{
+    max-width: 100%;
+}
+
+.author{
+    position: absolute;
+    right: 0;
+}

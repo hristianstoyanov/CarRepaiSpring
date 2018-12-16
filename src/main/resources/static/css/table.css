@@ -1,0 +1,73 @@
+.container {
+    margin-left: 15em;
+    margin-right: 15em;
+    background-color: #F6F6F6;
+    position:relative;
+}
+
+.textContainer {
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+}
+
+.tableContainer {
+    margin: 0 auto;
+    width: 75%;
+    text-align: center;
+}
+
+#articles {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%
+}
+
+#articles td, #articles th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#articles td:nth-child(1) {
+    width: 10%;
+}
+
+#articles tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#articles tr:hover {
+    background-color: #ddd;
+}
+
+#articles th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    /*background-color: #4CAF50;*/
+    background-color: #3498DB;
+    color: white;
+}
+
+.createButton{
+    position: absolute;
+    right: 15%;
+}
+
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 15%;
+}
+
+.brandImage{
+    display: block;
+    width:5em;
+    height: 5em;
+    padding-left: 15em;
+}

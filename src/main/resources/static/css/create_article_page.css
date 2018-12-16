@@ -1,0 +1,60 @@
+.container {
+    margin-left:15em;
+    margin-right:15em;
+    background-color: #F6F6F6;
+    height: 100vh;
+    position:relative;
+}
+
+.textTitle {
+    margin:0 auto;
+    width:100%;
+    text-align:center;
+}
+
+.textContent {
+    margin:0 auto;
+    width:100%;
+    text-align:center;
+}
+
+.textBox{
+    width:100%;
+    height: 30em;
+}
+
+.submitButton{
+    position: absolute;
+    right: 0;
+    background-color: #3498DB;
+    color: white;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    /*position: absolute;*/
+    /*right: 15%;*/
+    position: absolute;
+    right: 0;
+}
+
+.uploadImage{
+    position: absolute;
+    left: 0;
+    background-color: #3498DB;
+    color: white;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    overflow:hidden;
+}

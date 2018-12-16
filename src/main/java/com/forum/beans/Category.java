@@ -1,8 +1,6 @@
 package com.forum.beans;
 
-/**
- * Created by Hristiyan on 20.5.2018 ã..
- */
+
 public class Category {
 
     private int id;
